@@ -4,11 +4,27 @@ import { Text, Image } from 'react-native';
 
 import { Container, Content, Header, Card, CardItem, Body, View, Title , Left, Right} from 'native-base';
 
+
 import styles from './styles';
+import TypeFoodService from './TypeFoodService';
 
 export default class TypeFood extends React.Component {
 
-   render() {
+    
+    constructor(props) {
+        super(props);
+        this.service = new TypeFoodService();
+        this.state = {list: []};
+    }
+
+    componentDidMount() {
+        this.service.findAll().then(response => {
+            this.setState({list: response});
+        })
+        
+    }
+
+    render() {
 
        const {navigate} = this.props.navigation;
 
@@ -21,56 +37,32 @@ export default class TypeFood extends React.Component {
                <Header>
                    <Left />
                    <Body>
-                       <Title>Portifolio</Title>
+                       <Title>Portifolio </Title>
                    </Body>
                    <Right />
                </Header>
                <Content>
-                   <View style={styles.row}>
+                    <View style={styles.row}>
+                        {this.state.list.map(item => {
+                            const url = `../../imgs/${item.name.toString()}.png`;
 
-                       <Card style={styles.card}>
-                           <CardItem button onPress={nextPage} >
-                               <Body>
-                                   <Image
-                                       style={{width: 180, height: 120, alignContent: "center", alignSelf: "center"}}
-                                       source={require('../../imgs/bolinho.png')} />
-                                       <Text></Text>
-                               </Body>
-                           </CardItem>
-                       </Card>
-
-                       <Card style={styles.card}>
-                           <CardItem button onPress={nextPage} >
-                               <Body>
-                                   <Image
-                                       style={{width: 180, height: 120, alignContent: "center", alignSelf: "center"}}
-                                       source={require('../../imgs/docinho.png')} />
-                               </Body>
-                           </CardItem>
-                       </Card>
+                            return (
+                                <Card key={item.id}  style={styles.card}>
+                                    <CardItem button onPress={nextPage} >
+                                        <Body>
+                                            <Image
+                                                style={{
+                                                    width: 180, height: 120, 
+                                                    alignContent: "center", alignSelf: "center"
+                                                }}
+                                                source={require(url)} />
+                                        </Body>
+                                        <Text></Text>
+                                    </CardItem>
+                                </Card>
+                            )
+                        })}
                    </View>
-                   <View style={styles.row}>
-                       <Card style={styles.card}>
-                           <CardItem button onPress={nextPage} >
-                               <Body>
-                                   <Image
-                                       style={{width: 180, height: 120, justifyContent: "center", alignSelf: "center"}}
-                                       source={require('../../imgs/pao.png')} />
-                               </Body>
-                           </CardItem>
-                       </Card>
-
-                       <Card style={styles.card}>
-                           <CardItem button onPress={nextPage} >
-                               <Body>
-                                   <Image
-                                       style={{width: 180, height: 120, alignContent: "center", alignSelf: "center"}}
-                                       source={require('../../imgs/restaurante.png')} />
-                               </Body>
-                           </CardItem>
-                       </Card>
-                   </View>
-
                </Content>
            </Container>
        );
