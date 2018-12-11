@@ -10,7 +10,8 @@ export default styles = StyleSheet.create({
     width:155,
     height:155,
     marginTop: 25,
-    marginLeft: 20,
+    marginLeft: 28,
+    marginRight: 20,
     borderWidth: 1,
     borderRadius: 4,
   }
